@@ -8,7 +8,7 @@ from django.db import models
 class User(AbstractUser):
     email = models.EmailField(blank=False,null=False)
     phonenumber = PhoneNumberField(blank=True, null=True)
-    address = models.CharField(max_length=255, null=False, blank=False)
+    address = models.CharField(max_length=255, null=True, blank=True)
 
 
 
