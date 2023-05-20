@@ -11,6 +11,7 @@ from rest_framework.permissions import IsAuthenticated
 
 class TrackingAPIView(APIView):
     authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
 
     @staticmethod
     def get_weather_news_hotels(cities):
