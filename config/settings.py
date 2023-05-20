@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "xenomorph_api.apps.users",
+    "xenomorph_api.apps.tracking",
     "rest_framework_simplejwt",
 ]
 

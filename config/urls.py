@@ -16,8 +16,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from xenomorph_api.apps.users.api.v1 import urls as v1_users
+from xenomorph_api.apps.tracking.api.v1 import urls as v1_tracking
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("user/", include(v1_users)),
+    path("tracking/", include(v1_tracking))
 ]
