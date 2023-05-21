@@ -1,5 +1,12 @@
 import requests
+import os
 from xenomorph_api.apps.tracking.constants import CITY_HOTELS
+from dotenv import load_dotenv
+
+load_dotenv("config/.env")
+
+X_RAPIDAPI_WEATHER_KEY = os.getenv("X_RAPIDAPI_WEATHER_KEY")
+X_RAPIDAPI_NEWS_KEY = os.getenv("X_RAPIDAPI_NEWS_KEY")
 
 
 class TrackingService:
@@ -7,7 +14,7 @@ class TrackingService:
     def get_aggregated_weather(city):
         url = "https://open-weather13.p.rapidapi.com/city/" + city
         headers = {
-            "X-RapidAPI-Key": "7884ac9a8dmsh094f26a41f055dbp1ab199jsnfb717a605b71",
+            "X-RapidAPI-Key": X_RAPIDAPI_WEATHER_KEY,
             "X-RapidAPI-Host": "open-weather13.p.rapidapi.com"
         }
         response = requests.get(url, headers=headers)
@@ -30,7 +37,7 @@ class TrackingService:
         headers = {
             "X-BingApis-SDK": "true",
             "X-Search-Location": city,
-            "X-RapidAPI-Key": "ba4fb17e1dmsh4f6871f0c57b780p199c30jsn651b47606b47",
+            "X-RapidAPI-Key": X_RAPIDAPI_NEWS_KEY,
             "X-RapidAPI-Host": "bing-news-search1.p.rapidapi.com"
         }
         params = {

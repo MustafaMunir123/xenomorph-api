@@ -6,6 +6,7 @@ from xenomorph_api.apps.users.models import User
 
 
 class UserFeedback(models.Model):
+    objects = None
     id = models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="feedback_user")
     feedback = models.CharField(max_length=400, null=False, blank=False)

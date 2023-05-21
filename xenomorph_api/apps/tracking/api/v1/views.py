@@ -1,17 +1,24 @@
 import uuid
 from rest_framework.views import APIView
 from rest_framework.views import status
-from xenomorph_api.apps.tracking.services import TrackingService
-from xenomorph_api.apps.tracking.models import Tracks, Mark
+from xenomorph_api.apps.tracking.api.services import TrackingService
+from xenomorph_api.apps.email_service import send_email
+from xenomorph_api.apps.tracking.models import (
+    Tracks,
+    Mark
+)
 from xenomorph_api.apps.services import success_response
-from xenomorph_api.apps.tracking.api.v1.serializers import TrackingSerializer
+from xenomorph_api.apps.tracking.api.v1.serializers import (
+    TrackingSerializer,
+    UserFeedbackSerializer
+)
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.permissions import IsAuthenticated
 
 
 class TrackingAPIView(APIView):
-    authentication_classes = [JWTAuthentication]
-    permission_classes = [IsAuthenticated]
+    # authentication_classes = [JWTAuthentication]
+    # permission_classes = [IsAuthenticated]
 
     @staticmethod
     def get_weather_news_hotels(cities):
@@ -45,6 +52,8 @@ class TrackingAPIView(APIView):
 
     def post(self, request):
         try:
+            print("sdsh")
+            print(request.data)
             marks = request.data.pop("marks")
             request.data["id"] = uuid.uuid4()
             serializer = self.get_serializer()
@@ -66,5 +75,27 @@ class TrackingAPIView(APIView):
             serializer = self.get_serializer()
             serializer = serializer(tracks, many=Tracks)
             return success_response(status=status.HTTP_200_OK, data=serializer.data)
+        except Exception as ex:
+            raise ex
+
+
+class FeedbackAPIView(APIView):
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    @staticmethod
+    def get_serializer():
+        return UserFeedbackSerializer
+
+    def post(self, request):
+        try:
+            request.data["user_id"] = request.user.user_id
+            serializer = self.get_serializer()
+            serializer = serializer(data=request.data)
+            serializer.is_valid(raise_exception=True)
+            serializer.save()
+            send_email(to="mustafamunir10@gmail.com", subject="User Feedback",
+                       body=serializer.validated_data["feedback"])
+            return success_response(status=status.HTTP_200_OK, data=serializer.validated_data)
         except Exception as ex:
             raise ex

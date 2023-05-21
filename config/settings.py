@@ -26,7 +26,10 @@ SECRET_KEY = "django-insecure-%y^kolvl@5tc)b-@$k8zh0z7ryis9cpnzl5wieb8*jk*(@q)gq
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+# ALLOWED_HOSTS = ['*']
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+]
 
 
 # Application definition
@@ -41,11 +44,13 @@ INSTALLED_APPS = [
     "xenomorph_api.apps.users",
     "xenomorph_api.apps.tracking",
     "rest_framework_simplejwt",
+    "corsheaders"
 ]
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -135,6 +140,7 @@ REST_FRAMEWORK = {
     "EXCEPTION_HANDLER": "xenomorph_api.apps.services.custom_exception_handler",
 }
 AUTH_USER_MODEL = "users.User"
+# CORS_ORIGIN_ALLOW_ALL = True
 
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30),
@@ -167,3 +173,5 @@ SIMPLE_JWT = {
     'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
 }
 
+CELERY_BROKER_URL = "redis://localhost:6379/0"
+CELERY_RESULT_BACKEND = "redis://localhost:6379/1"

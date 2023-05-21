@@ -4,7 +4,7 @@ from django.contrib.auth.hashers import make_password
 
 
 class UserLoginSerializer(serializers.Serializer):
-    username = serializers.CharField()
+    username = serializers.CharField(max_length=120)
     password = serializers.CharField(max_length=128)
 
 
